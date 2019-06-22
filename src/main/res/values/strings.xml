@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">demo1</string>
+    <string name="b0">mood</string>
+    <string name="b1">friend</string>
+    <string name="b2">Best friend</string>
+    <string name="button1">b1</string>
+    <string name="button2">b2</string>
+    <string name="button3">b3</string>
+    <string name="button4">b4</string>
+    <string name="button5">b5</string>
+    <string name="button6">b6</string>
+    <string name="button7">save</string>
+    <string name="text"></string>
+    <string name="spinner">data</string>
+    <string name="name">Boy</string>
+    <string name="setting">Setting</string>
+    <string name="title_activity_chatroom">chatroom</string>
+</resources>

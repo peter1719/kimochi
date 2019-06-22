@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name = "date">
+        <item>12_1</item>
+        <item>12_2</item>
+        <item>12_3</item>
+        <item>12_4</item>
+        <item>12_5</item>
+    </array>
+</resources>

@@ -62,22 +62,25 @@ APP 製作
 -------------------------------
 # APP 實作
 
-###  1.連接 Firebase
+###  連接 Firebase
 ![](https://i.imgur.com/SYvAoZ9.png)
 
 本次實作為使用其Realtime database
 
 完成裡面的設置即可完成連接
 
-### 2.Firebase設定
+### Firebase設定
 依照步驟完成Firebase 要求之設置
 ![](https://i.imgur.com/RW6UzJG.png)
 並設定資料庫成 可讀可寫 按下發布即可更改設定
 ![](https://i.imgur.com/IsyoIBu.png)
 
-### 3.APP 基本語法
+### 聊天室製作
+[參考](https://code.tutsplus.com/zh-hant/tutorials/how-to-create-an-android-chat-app-using-firebase--cms-27397)
 
-1. 從畫面得到物件，並轉換成該物件型態
+### APP 基本語法
+
+#### 1. 從畫面得到物件，並轉換成該物件型態
 ```java=
 package com.example.functioncall;
 
@@ -150,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 ```
-2.建立物件
+#### 2.建立物件
 點選右鍵 app->java->new->java class
 編輯畫面中右鍵使用generate 幫助跨快速建構function 如: 建構子 set & get
 ```java=
@@ -181,7 +184,7 @@ public class chat {
 }
 
 ```
-佈局範例
+#### 佈局範例
 ```xml=
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
@@ -225,7 +228,7 @@ public class chat {
 </LinearLayout>
 ```
 * 藍芽實作
-MainActivity
+#### java
 ```java=
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -408,7 +411,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 ```
 
 
-設定檔
+#### 設定檔需增加權限設置
 ```xml=
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"

@@ -227,45 +227,8 @@ public class chat {
 * 藍芽實作
 MainActivity
 ```java=
-package com.example.bluetooth;
-
-import android.Manifest;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.location.LocationManager;
-import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.PriorityQueue;
-import java.util.Set;
-import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-    private Button btn_Search;
-    private Button btn_mode1;
-    private Button btn_mode2;
-    private Button btn_mode3;
-    private Button clear;
 
     private BluetoothAdapter mBluetoothAdapter = null;
     private BluetoothSocket mBluetoothSocket = null;
@@ -278,16 +241,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private InputStream inputStream = null;
     private OutputStream outputStream = null;
     private static final String TAG = "MainActivity";
-    private TextView text_data;
     volatile boolean stopThread = true;
     private int readBufferPosition;
     private byte[] readBuffer;
 
 
     private String UID;
-    private int counter = 0;
-    private LocationManager locMgr;
-    private String bestProv;
     private boolean CONNECTED = false;
     private ListView list_view;
     private String input = "";
@@ -302,21 +261,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btn_mode1 = (Button) findViewById(R.id.btn_mode1);
-        btn_mode2 = (Button) findViewById(R.id.btn_mode2);
-        btn_mode3 = (Button) findViewById(R.id.btn_mode3);
-        btn_Search = (Button) findViewById(R.id.btn_Search);
-        clear = (Button) findViewById(R.id.clear);
         mBluetoothAdapter  = BluetoothAdapter.getDefaultAdapter();
         list_view = (ListView)findViewById(R.id.lvNewDevices);
         list_view.setOnItemClickListener(MainActivity.this);
         deviceName = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1);
         deviceID = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1);
-        text_data = (TextView)findViewById(R.id.text_data);
     }
 
 
-
+//搜尋藍芽裝置，並顯示在Listview上
     public void Search(View view)
     {
         deviceName.clear();
@@ -345,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     };
 
 
-
+//當List view 被點擊時
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         choseID = deviceID.getItem(position);
@@ -367,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         deviceID.clear();
         //list_view.setVisibility(view.INVISIBLE);
     }
-
+//連接藍芽
     private void connectBlue() throws IOException{
         if (chosenDevice != null){
             mBluetoothSocket = chosenDevice.createRfcommSocketToServiceRecord(myUUID);
@@ -390,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             GetData();
         }
     }
-
+//接收資料
     private void GetData(){
         final Handler handler = new Handler();
         final byte delimeter = 10;
@@ -440,7 +393,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
-
+//傳送資料給藍芽
     public void mode1(View view) throws IOException {
         if (!CONNECTED)
             throw new IOException("not connected");
@@ -450,107 +403,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             mBluetoothSocket.getOutputStream().write(data);
         }
     }
-
-    public void mode2(View view) throws IOException {
-        if (!CONNECTED)
-            throw new IOException("not connected");
-        else {
-            input = "2";
-            byte[] data = (input + newline).getBytes();
-            mBluetoothSocket.getOutputStream().write(data);
-        }
-    }
-
-    public void mode3(View view) throws IOException {
-        if (!CONNECTED)
-            throw new IOException("not connected");
-        else {
-            input = "3";
-            byte[] data = (input + newline).getBytes();
-            mBluetoothSocket.getOutputStream().write(data);
-        }
-    }
-
-    public void clear(View view) {
-        text_data.setText("data");
-    }
 }
 
 ```
-Layout
-```xml=
-<?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search"
-        android:id="@+id/btn_Search"
-        android:onClick="Search"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="mode1"
-        android:id="@+id/btn_mode1"
-        android:onClick="mode1"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="mode2"
-        android:id="@+id/btn_mode2"
-        android:onClick="mode2"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="mode3"
-        android:id="@+id/btn_mode3"
-        android:onClick="mode3"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="clear"
-        android:id="@+id/clear"
-        android:onClick="clear"/>
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:id="@+id/lvNewDevices">
-    </ListView>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/text_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="data"
-                android:textSize="15sp" />
-        </LinearLayout>
-    </ScrollView>
-
-
-</LinearLayout>
-
-```
 
 設定檔
 ```xml=
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.bluetooth">
+<!-- 加入這段     -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
